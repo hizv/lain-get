@@ -10,76 +10,33 @@
 
 #include "lain.hpp"
 
-int main(int argc, char* argv[])
+#define not_in(x,y) std::find(x.begin(), x.end(), y) == x.end() // for checking if the extension will be in the filetypes specified 
+
+URL_Info::URL_Info(std::string url, Chan chan)
+    :url(url), chan(chan)
 {
-    namespace po = boost::program_options;
+            const int last_slash = url.find_last_of("/"); // for splitting the board name and the thread number
+            board = url.substr(0, last_slash); 
 
-    po::options_description desc("Usage: " + std::string(argv[0]) + " [options]  <board/thread>"); // help/description
+            if(chan.src_url == "https://lainchan.org/") // lainchan has some greek board names and therefore the user can type alternative names
+                lain_expand();
 
-    desc.add_options() // command line options
-    ("help", "produce help message")
-    ("chan,c", po::value<std::string>()->default_value("lain"), "change chan")
-    ("thread,t", po::value<std::string>(), "thread in format <board/thread> e.g. lit/343")
-    ("type,f", po::value<std::vector <std::string>>(), "download only files of specified types")
-    ("quiet,q", "do not output download messages")
-    ;
+            thread = url.substr(last_slash + 1);
+            filename = thread + ".json";
 
-    po::positional_options_description p;
-    p.add("thread", -1); // makes specifying option 'thread' optional
-
-    po::variables_map vm;
-    po::store(po::command_line_parser(argc, argv)
-            .options(desc)
-            .positional(p)
-            .run(), vm);
-
-    po::notify(vm);    
-
-    if (vm.count("help")) { // checks if help option is specified
-        std::cout << desc << "\n";
-        return 1;
-    }
-
-    Chan chan = cmap[vm["chan"].as<std::string>()]; // gets the respective Chan data from the chan option
-    bool quiet = vm.count("quiet");
-
-    if(vm.count("thread")) {
-        URL_Info info(vm["thread"].as<std::string>(), chan);
-
-        get_page(info.url, info.filename, quiet);
-
-        string_map files;
-        if(vm.count("type")) 
-            files = get_files(info, vm["type"].as<std::vector <std::string>>());
-        else
-            files = get_files(info, std::vector<std::string>());
-
-        std::string url, filename;
-
-        for(auto iter = files.begin(); iter != files.end(); iter++){
-            url = iter->second;
-            filename = iter->first;
-
-            get_page(url, filename, quiet);
-        }
-
-        bool deleted = remove(info.filename.c_str()) == 0;
-
-        if(quiet)
-            return 0;
-
-        if(deleted)
-            std::cout << "deleted " << info.filename << ".\n";
-        else 
-            std::cerr << "error: could not delete " << info.filename << ".\n";
-        return 0;
-
-    } else {
-        std::cout << desc << '\n';
-        return 1;
-    }
-
+            if(chan.has_src)
+                this->url = chan.src_url + board + "/res/" + filename; // lain-like else this->url = chan.json_url + board + "/thread/" + filename; // fourchan
 }
+
+void URL_Info::lain_expand() {
+    if(board == "pr") // programming board
+        board = "λ"; 
+    else if(board == "g") // tech board
+        board = "Ω";
+    else if(board == "diy") 
+        board = "Δ";
+}
+
 
 void get_page(std::string& url, std::string& filename, bool quiet)
 {

@@ -21,6 +21,7 @@ struct Chan {
     Chan() {}
 };
 
+
 struct URL_Info {
     Chan chan;
     std::string board; 
@@ -30,25 +31,12 @@ struct URL_Info {
 
     void lain_expand(); // makes it easier to type non-ascii characters by replacing with alternatives
 
-    URL_Info(std::string url, Chan chan)
-        :url(url), chan(chan)
-    {
-            const int last_slash = url.find_last_of("/"); // for splitting the board name and the thread number
-            board = url.substr(0, last_slash); 
-
-            if(chan.src_url == "https://lainchan.org/") // lainchan has some greek board names and therefore the user can type alternative names
-                lain_expand();
-
-            thread = url.substr(last_slash + 1);
-            filename = thread + ".json";
-
-            if(chan.has_src)
-                this->url = chan.src_url + board + "/res/" + filename; // lain-like else this->url = chan.json_url + board + "/thread/" + filename; // fourchan
-    }
+    URL_Info(std::string url, Chan chan);
 };
-  
+
+
 // list of chans (to be expanded)
-std::map<std::string, Chan> cmap = boost::assign::map_list_of("4", Chan("https://i.4cdn.org/", "https://a.4cdn.org/", false)) // fourchan
+static std::map<std::string, Chan> cmap = boost::assign::map_list_of("4", Chan("https://i.4cdn.org/", "https://a.4cdn.org/", false)) // fourchan
                                                             ("lain", Chan("https://lainchan.org/", true)) // lainchan
                                                             ("wiz", Chan("https://wizchan.org/", true)) // wizchan
                                                             ;
@@ -57,13 +45,3 @@ std::map<std::string, Chan> cmap = boost::assign::map_list_of("4", Chan("https:/
 void get_page(std::string& url, std::string& filename, bool quiet); // function declarations
 string_map get_files(URL_Info& info, std::vector<std::string> filetypes);
 
-void URL_Info::lain_expand() {
-    if(board == "pr") // programming board
-        board = "λ"; 
-    else if(board == "g") // tech board
-        board = "Ω";
-    else if(board == "diy") 
-        board = "Δ";
-}
-
-#define not_in(x,y) std::find(x.begin(), x.end(), y) == x.end() // for checking if the extension will be in the filetypes specified 
