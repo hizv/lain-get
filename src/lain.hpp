@@ -45,3 +45,4 @@ static std::map<std::string, Chan> cmap = boost::assign::map_list_of("4", Chan("
 void get_page(std::string& url, std::string& filename, bool quiet); // function declarations
 string_map get_files(URL_Info& info, std::vector<std::string> filetypes);
 
+static const std::string LAINCHAN_ALT_OPTIONS_MSG = "for lainchan, the following alternative board names can be used:\npr\tλ\ndiy\tΔ\ng\tΩ\n";

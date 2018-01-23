@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     po::notify(vm);    
 
     if (vm.count("help")) { // checks if help option is specified
-        std::cout << desc << "\n";
+        std::cout << desc << '\n' << LAINCHAN_ALT_OPTIONS_MSG <<  "\n";
         return 1;
     }
 
