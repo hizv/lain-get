@@ -9,7 +9,7 @@ Download files from imageboards.
 ## Installation
 ```
 git clone https://github.com/himnish/lain-get.git
-cd src
+cd lain-get
 make
 ```
 
