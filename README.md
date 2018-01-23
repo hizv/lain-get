@@ -1,5 +1,8 @@
 # lain-get
 Download files from imageboards.
+## Features
+* Specify file types
+* Download from a large number of imageboards(3)
 
 ## Requirements
 * boost-libs
