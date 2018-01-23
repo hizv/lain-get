@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
     desc.add_options() // command line options
     ("help", "produce help message")
-    ("chan,c", po::value<std::string>()->default_value("lain"), "change chan")
+    ("chan,c", po::value<std::string>()->default_value("lain"), "change imageboard ['?' to view available options")
     ("thread,t", po::value<std::string>(), "thread in format <board/thread> e.g. lit/343")
     ("type,f", po::value<std::vector <std::string>>(), "download only files of specified types")
     ("quiet,q", "do not output download messages")
