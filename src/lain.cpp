@@ -15,17 +15,17 @@
 URL_Info::URL_Info(std::string url, Chan chan)
     :url(url), chan(chan)
 {
-            const int last_slash = url.find_last_of("/"); // for splitting the board name and the thread number
-            board = url.substr(0, last_slash); 
+    const int last_slash = url.find_last_of("/"); // for splitting the board name and the thread number
+    board = url.substr(0, last_slash); 
 
-            if(chan.src_url == "https://lainchan.org/") // lainchan has some greek board names and therefore the user can type alternative names
-                lain_expand();
+    if(chan.src_url == "https://lainchan.org/") // lainchan has some greek board names and therefore the user can type alternative names
+	lain_expand();
 
-            thread = url.substr(last_slash + 1);
-            filename = thread + ".json";
+    thread = url.substr(last_slash + 1);
+    filename = thread + ".json";
 
-            if(chan.has_src)
-                this->url = chan.src_url + board + "/res/" + filename; // lain-like else this->url = chan.json_url + board + "/thread/" + filename; // fourchan
+    if(chan.has_src)
+	this->url = chan.src_url + board + "/res/" + filename; // lain-like else this->url = chan.json_url + board + "/thread/" + filename; // fourchan
 }
 
 void URL_Info::lain_expand() {

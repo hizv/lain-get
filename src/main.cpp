@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
     desc.add_options() // command line options
     ("help", "produce help message")
-    ("chan,c", po::value<std::string>()->default_value("lain"), "change imageboard ['?' to view available options")
+    ("chan,c", po::value<std::string>()->default_value("lain"), "change imageboard ['h' to view available options]")
     ("thread,t", po::value<std::string>(), "thread in format <board/thread> e.g. lit/343")
     ("type,f", po::value<std::vector <std::string>>(), "download only files of specified types")
     ("quiet,q", "do not output download messages")
@@ -35,9 +35,16 @@ int main(int argc, char* argv[])
 
     po::notify(vm);    
 
-    if (vm.count("help")) { // checks if help option is specified
+    if(vm.count("help")) { // checks if help option is specified
         std::cout << desc << '\n' << LAINCHAN_ALT_OPTIONS_MSG <<  "\n";
-        return 1;
+        return 0;
+    }
+
+    if(vm["chan"].as<std::string>() == "h") {
+	for(auto elem : cmap) {
+	    std::cout << elem.first << "\t" << elem.second.src_url << "\n";
+	}
+	return 0;
     }
 
     Chan chan = cmap[vm["chan"].as<std::string>()]; // gets the respective Chan data from the chan option
