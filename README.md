@@ -20,3 +20,5 @@ make
 * [lainchan](https://lainchan.org)
 * [4chan](https://4chan.org)
 * [wizchan](https://wizchan.org)
+* [arisu](https://arisuchan.jp/)
+* [8chan](https://8ch.net/)
