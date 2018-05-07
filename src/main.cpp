@@ -30,12 +30,19 @@ int main (int argc, char* argv[])
     p.add ("thread", -1); // makes specifying option 'thread' optional
 
     po::variables_map vm;
+
+    try {
     po::store (po::command_line_parser (argc, argv)
                .options (desc)
                .positional (p)
                .run(), vm);
 
     po::notify (vm);
+    }
+    catch ( po::error& pex ){
+	std::cerr << pex.what() << '\n';
+	return 1;
+    }
 
     if (vm.count ("help") ) // checks if help option is specified
     {
@@ -69,15 +76,19 @@ int main (int argc, char* argv[])
 
         std::string url, filename;
 
+	unsigned total_files = files.size(),
+		 counter = 0;
+
         for (auto iter = files.begin(); iter != files.end(); iter++)
         {
             url = iter->second;
             filename = iter->first;
 
+	    std::cout << '[' << ++counter << '/' << total_files << "] ";
             get_page (url, filename, quiet);
         }
 
-        bool deleted = remove (info.filename.c_str() ) == 0;
+        bool deleted = (remove (info.filename.c_str())  == 0 );
 
         if (quiet)
             return 0;

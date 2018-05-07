@@ -39,11 +39,11 @@ struct URL_Info
 // list of chans (to be expanded)
 static std::map<std::string, Chan> cmap = boost::assign::map_list_of
 
-        ("4",       Chan ("https://i.4cdn.org/", "https://a.4cdn.org/", false) )
-        ("lain",    Chan ("https://lainchan.org/",       true) ) 
-        ("wiz",     Chan ("https://wizchan.org/",        true) ) 
-        ("arisu",   Chan ("https://arisuchan.jp/",       true) ) 
-        ("8",       Chan ("https://8ch.net/",            true) ) 
+        ("4",       Chan ("https://i.4cdn.org", "https://a.4cdn.org", false) )
+        ("lain",    Chan ("https://lainchan.org",       true) ) 
+        ("wiz",     Chan ("https://wizchan.org",        true) ) 
+        ("arisu",   Chan ("https://arisuchan.jp",       true) ) 
+        ("8",       Chan ("https://8ch.net",            true) ) 
         ;
 
 // function declarations

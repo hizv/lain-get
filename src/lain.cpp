@@ -22,15 +22,18 @@ URL_Info::URL_Info (std::string url, Chan chan)
     filename = thread + ".json";
 
     if (chan.has_src)
-        this->url = chan.src_url + board + "/res/" + filename; // lain-like
-    else this->url = chan.json_url + board + "/thread/" + filename; // fourchan
+        this->url = chan.src_url + "/" + board + "/res/" + filename; // lain-like
+    else 
+	this->url = chan.json_url + "/" + board + "/thread/" + filename; // fourchan
 }
 
 void get_page (std::string& url, std::string& filename, bool quiet)
 {
+
     CURL* curl = curl_easy_init();
     
     curl_easy_setopt (curl, CURLOPT_URL, url.c_str() );
+    curl_easy_setopt (curl, CURLOPT_FOLLOWLOCATION, true);
 
     FILE* file = fopen (filename.c_str(), "w");
 
@@ -67,7 +70,7 @@ string_map get_files (URL_Info& info, std::vector<std::string> filetypes) // dow
             if (!name.empty() )
             {
                 ext = post["ext"].asString();
-                if (filetype_specified && not_in (filetypes, ext.substr (1) ) )
+                if (filetype_specified && not_in (filetypes, ext.substr(1) ) )
                     goto extras;
 
                 tim = post["tim"].asString();
@@ -76,7 +79,7 @@ string_map get_files (URL_Info& info, std::vector<std::string> filetypes) // dow
                 if (info.chan.has_src)
                     files[filename] = info.chan.src_url + "/" + info.board + "/src/"+ tim + ext;
                 else
-                    files[filename] = info.chan.src_url + tim + ext;
+                    files[filename] = info.chan.src_url + "/" + info.board + "/" + tim + ext;
 
 extras:
                 auto extras = post["extra_files"];
