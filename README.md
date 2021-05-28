@@ -5,12 +5,13 @@ Download files from imageboards.
 * Download from a large number of imageboards (5)
 
 ## Requirements
-* pip
-* cmake
+* boost
+* jsoncpp
+* libcurl
 
 ## Installation
 ```
-curl http://0x0.st/i49Y.sh | bash
+curl https://0x0.st/-2mH.sh | bash
 ```
 ## Usage Examples
 * Download all files from thread no. 3670653 of 4chan's /jp/ board.
